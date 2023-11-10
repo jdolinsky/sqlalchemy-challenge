@@ -59,12 +59,14 @@ def precip():
     query_date = dt.date(last_date.year -1, last_date.month, last_date.day)
     results = session.query(Measurement.date, Measurement.prcp).filter(Measurement.date >= query_date).all()
     session.close()
-
+    response = []
     # Convert results into a list
-    keys = array(["date", "prcp"])
-    # results = list(np.ravel(results))
-    results = array(["2023", 5, "2024", 6])
+    results = list(np.ravel(results))
     print(results)
-    dict(zip(keys, results))
-    return "hello" 
-    #return jsonify(results)
+    for i in range(0, len(results), 2):
+        # Create a new dictionary.
+        dictionary = {}
+        dictionary["date"] = results[i]
+        dictionary["prcp"] = results[i+1]
+        response.append(dictionary)
+    return jsonify(response)
