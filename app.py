@@ -70,3 +70,13 @@ def precip():
         dictionary["prcp"] = results[i+1]
         response.append(dictionary)
     return jsonify(response)
+
+@app.route('/api/v1.0/stations')    
+def stations():
+    stations = []
+    result = session.query(Station.station,Station.name,Station.latitude,Station.longitude,Station.elevation).all()
+    for row in result:
+        row_as_dict = row._mapping 
+        stations.append(row_as_dict)
+    
+    return stations
